@@ -1,7 +1,0 @@
-subscription_id = "07b02753-9d34-4e84-862d-04099062b12b"
-client_id = "e8adbbc0-c764-42bc-85d6-59f3bd8e07c7"
-resource_group_name = "rg-vm-test-centralindia"
-admin_password = "azure@123"
-#location = "Central India"
-kv_secret_value = "value@123"
-object_id = "33546b7d-1796-4140-af74-b25bbbbe9036"
