@@ -1,0 +1,145 @@
+1. Naming 	Convention - A good name for a resource helps you to quickly identify its type, its associated workload, its environment, and the Azure region where it runs. To do so, names should follow a consistent format—a naming convention—that is composed of important information about each resource. The information in the names ideally includes whatever you need to identify specific instances of resources. For example, a public IP address (PIP) for a production SharePoint workload in the West US region might be pip-sharepoint-prod-westus-001.
+
+
+     Resource type-Project-Environment-Region-Instance
+eg - vm-web-test-centrailindia-01
+
+2. Purpose and how it help - Purpose is to make identification easy and it is because it helps you to get the insight of the resources easily
+
+                  
+
+
+                                         Terraform State
+
+Terraform State is a core concept that tracks and manages the infrastructure created by Terraform. It helps Terraform understand which resources exist, their configurations, and dependencies. Let's go deep into state management, different types of Terraform files (variable.tf, main.tf, provider.tf, output.tf, etc.), and best practices.
+
+🔹 What Is Terraform State (terraform.tfstate)?
+Terraform State stores information about: ✔ Existing infrastructure Terraform has deployed. ✔ Resource dependencies and relationships. ✔ Cloud provider IDs and metadata for accurate updates.
+
+Terraform uses this state file to ensure that when applying changes (terraform apply), only necessary modifications happen instead of recreating everything.
+
+🔹 Terraform State Files and Workflow
+When using Terraform, different types of files manage various configurations:
+
+1. terraform.tfstate (State File)
+Stores real-world infrastructure details after Terraform creates resources.
+
+Helps track changes between configuration (.tf files) and actual deployment.
+
+🔹 Why It’s Important? It ensures Terraform knows existing resources instead of blindly creating new ones.
+
+
+
+2. main.tf (Configuration File)
+Contains the core infrastructure setup (VMs, networks, storage, etc.).
+
+🔹 Why It’s Important? Defines the actual infrastructure resources Terraform will create.
+
+
+
+3. provider.tf (Provider Configuration)
+Specifies the cloud provider (Azure, AWS, GCP) and authentication details.
+
+🔹 Why It’s Important? Defines which cloud provider Terraform interacts with.
+
+
+
+4. variables.tf (Input Variables File)
+Stores reusable variable definitions for cleaner configuration.
+
+🔹 Why It’s Important? Avoids hardcoded values, making configurations more flexible.
+
+
+
+5. output.tf (Outputs File)
+Defines outputs to display important values after Terraform execution.
+
+🔹 Why It’s Important? Helps retrieve dynamic values (like VM IPs) after deployment.
+
+
+
+6. terraform.tfvars (Variable Values File)
+Stores actual values for variables when running Terraform.
+
+🔹 Why It’s Important? Allows variable overrides without modifying variables.tf.
+
+
+
+
+Training till now:-
+
+a. terraform init - terraform init is the first command you run in a Terraform project to set up the working directory. It performs key tasks:
+
+ Initializes Terraform → Prepares the directory for Terraform usage.  Downloads Required Providers → Retrieves cloud provider plugins (Azure, AWS, etc.).  Configures the Backend → If using remote state, it sets up storage locations.  Validates Dependencies → Ensures all required plugins and modules are available.
+
+
+b. terraform plan - is a command that previews the changes Terraform will make to your infrastructure before applying them. It helps you understand what will be created, modified, or destroyed without making actual changes.
+       
+       What Does terraform plan Do? - Reads the current state of existing infrastructure.  Compares the desired configuration (.tf files) with the current state.  Proposes changes needed to match the configuration.  Prevents unintended modifications by showing a detailed execution plan.
+        
+       Why Use terraform plan?  -   Avoid mistakes before applying changes.  Collaborate effectively by reviewing proposed updates.  Ensure infrastructure consistency before deployment.
+ 
+
+
+c. terraform apply - It is the command that executes the planned changes to your infrastructure. It takes the proposed modifications from terraform plan and applies them to your cloud environment.
+
+       What Does terraform apply Do?  -  
+✔ Creates, updates, or deletes resources based on your Terraform configuration. ✔ Uses the execution plan to ensure only necessary changes are made. ✔ Prompts for confirmation before applying changes (unless -auto-approve is used). 
+
+       
+d. depends on - It is a meta-argument in Terraform that explicitly defines dependencies between resources. While Terraform automatically determines dependencies based on references within resource blocks, depends_on is useful when Terraform cannot infer
+
+       Why Use depends_on?  -  
+✔               Ensures a resource is created or modified only after another resource is completed. ✔ Helps manage hidden dependencies that Terraform does not detect automatically. ✔ Useful when a resource does not directly reference another but still depends on it.
+
+       How It Works?  -  The VM (azurerm_virtual_machine.example) does not directly reference the storage account.
+
+                         However, it must wait for the storage account to be created first.
+
+                         depends_on ensures Terraform processes the storage account first before creating the VM.
+
+
+
+e. variable.tf - It is a Terraform file used to define input variables that make configurations more flexible and reusable. Instead of hardcoding values, you can use variables to dynamically adjust infrastructure settings.
+
+       Why Use variable.tf? -  
+                Avoid Hardcoded Values → Makes configurations adaptable. ✔ Enhance Reusability → Use the same Terraform code across different environments. ✔ Improve Maintainability → Easily update values without modifying multiple files.
+
+	How It Works?  -  description → Provides details about the variable.
+
+         	type → Defines the expected data type (string, number, list, etc.).
+
+	        default → Sets a default value (optional).
+
+
+
+f. main.tf - It is the primary configuration file in a Terraform project. It defines the core infrastructure resources that Terraform will create, modify, or delete.
+
+	Purpose of main.tf - 
+	       Acts as the entry point for Terraform execution. ✔ Defines resources, providers, and dependencies. ✔ Helps structure infrastructure as code (IaC) for cloud deployments.
+
+	What This Does?  -  Defines Azure as the provider (provider "azurerm").
+
+	      Creates a resource group (azurerm_resource_group).
+
+	      Sets up a virtual network (azurerm_virtual_network).
+
+	Key Components in main.tf -  
+	        Providers → Specify cloud platforms (Azure, AWS, GCP). ✔ Resources → Define infrastructure components (VMs, networks, storage). ✔ Variables → Allow dynamic configurations (var.resource_group_name). ✔ Outputs → Display important values after deployment (output.tf).
+
+
+g. resource block - A resource block in Terraform is used to define and manage individual infrastructure components, such as virtual machines, networks, storage accounts, and databases. It is the core building block of Terraform configurations.
+
+	Structure of a Resource Block  -  provider_resource_type → Specifies the type of resource (e.g., aws_instance, azurerm_virtual_machine).
+
+	                 resource_name → A unique name within the Terraform module to reference the resource.
+
+	                 Arguments → Define the resource’s properties (e.g., VM size, location, network settings).
+
+
+h. providers - 
+
+
+
+
+
